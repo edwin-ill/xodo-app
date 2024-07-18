@@ -20,7 +20,7 @@ export default function Layout({ children }) {
             enableSystem
             disableTransitionOnChange
           >
-          <header className="bg-gray-900 text-white py-6 px-6 md:px-10">
+          <header className="bg-gray-950 text-white py-6 px-6 md:px-10">
             <div className="container mx-auto flex items-center">
               <Link href="/" className="flex items-center w-1/4" prefetch={false}>
                 <span className="text-xl font-bold">Acme Dealership</span>

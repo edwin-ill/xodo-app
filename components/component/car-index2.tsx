@@ -4,6 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { EmblaCarousel } from '@/components/component/EmblaCarousel';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { X as XIcon } from 'lucide-react';
 
 interface Car {
   id: number;
@@ -37,6 +41,7 @@ interface NHTSAFeature {
 export function Carindex2({ id }: { id: number }) {
   const [car, setCar] = useState<Car | null>(null);
   const [features, setFeatures] = useState<NHTSAFeature[]>([]);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   useEffect(() => {
     const fetchCarData = async () => {
@@ -159,8 +164,7 @@ export function Carindex2({ id }: { id: number }) {
                   <p className="text-sm text-gray-500">{car.dealership.city}</p>
                 </div>
               </div>
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Contact Dealer</Button>
-              <Button variant="outline" className="w-full">Add to Favorites</Button>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={() => setIsContactFormOpen(true)}>Contact Dealer</Button>
               <div className="text-sm text-gray-500">
                 <p>📞 {car.dealership.phoneNumber}</p>
                 <p>📍 {car.dealership.address}, {car.dealership.city}</p>
@@ -170,10 +174,54 @@ export function Carindex2({ id }: { id: number }) {
           </Card>
         </div>
       </div>
+      <ContactFormPopup 
+        isOpen={isContactFormOpen} 
+        onClose={() => setIsContactFormOpen(false)} 
+      />
     </div>
   );
 }
+function ContactFormPopup({ isOpen, onClose }) {
+  if (!isOpen) return null;
 
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="relative w-full max-w-md mx-auto">
+        <Card>
+          <Button 
+            onClick={onClose} 
+            className="absolute top-2 right-2 h-8 w-8 p-0 bg-transparent hover:bg-gray-100 text-gray-500"
+          >
+            <XIcon className="h-6 w-6" />
+          </Button>
+          <CardHeader>
+            <CardTitle>Contact Us</CardTitle>
+            <CardDescription>Fill out the form below and we'll get back to you as soon as possible.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <form className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" placeholder="Enter your name" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="Enter your email" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="message">Message</Label>
+                <Textarea id="message" placeholder="Enter your message" className="min-h-[150px]" />
+              </div>
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white">
+                Submit
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
 function formatFeatureName(name: string): string {
   return name.split(/(?=[A-Z])/).join(' ');
 }
@@ -192,7 +240,7 @@ function getIcon(iconName: string) {
     VideoIcon
   };
   const IconComponent = icons[iconName as keyof typeof icons];
-  return <IconComponent className="w-5 h-5 text-blue-500" />;
+  return <IconComponent className="w-5 h-5 text-red-600" />;
 }
 
 function BrakeDiscIcon(props) {

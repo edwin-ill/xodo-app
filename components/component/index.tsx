@@ -73,7 +73,7 @@ export default function Component() {
                 <h1 className="text-4xl md:text-6xl font-bold">Acme Dealership</h1>
               </div>
               <p className="text-lg md:text-xl">Discover your dream car today.</p>
-              <Button onClick={() => router.push('/inventory')}>Browse Inventory</Button>
+              <Button className="w-1/2 bg-red-600 hover:bg-red-700 text-white" onClick={() => router.push('/inventory')}>Browse Inventory</Button>
             </div>
           </div>
         </section>
@@ -106,7 +106,7 @@ export default function Component() {
           </div>
         </section>
       </main>
-      <footer className="bg-gray-900 text-white py-6 px-4 md:px-6">
+      <footer className="bg-gray-950 text-white py-6 px-4 md:px-6">
         <div className="container mx-auto flex items-center justify-between">
           <p className="text-sm">&copy; 2024 Acme Dealership. All rights reserved.</p>
           <nav className="flex items-center space-x-4">
