@@ -177,11 +177,46 @@ export function Carindex2({ id }: { id: number }) {
       <ContactFormPopup 
         isOpen={isContactFormOpen} 
         onClose={() => setIsContactFormOpen(false)} 
+        carDetails={car}
       />
     </div>
   );
 }
-function ContactFormPopup({ isOpen, onClose }) {
+function ContactFormPopup({ isOpen, onClose, carDetails }) {
+
+  const [formData, setFormData] = useState({
+    senderName: '',
+    senderEmail: '',
+    message: '',
+    car: `${carDetails.vin} ${carDetails.year} ${carDetails.carMake} ${carDetails.model}`
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await axios.post('https://localhost:7126/api/v1/Email', formData);
+      console.log('Form submitted successfully:', response.data);
+      onClose(); 
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitError('An error occurred while submitting the form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   if (!isOpen) return null;
 
   return (
@@ -199,21 +234,46 @@ function ContactFormPopup({ isOpen, onClose }) {
             <CardDescription>Fill out the form below and we'll get back to you as soon as possible.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form className="grid gap-4">
+            <form onSubmit={handleSubmit} className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Enter your name" />
+                <Label htmlFor="senderName">Name</Label>
+                <Input 
+                  id="senderName" 
+                  placeholder="Enter your name" 
+                  value={formData.senderName}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email" />
+                <Label htmlFor="senderEmail">Email</Label>
+                <Input 
+                  id="senderEmail" 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={formData.senderEmail}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Enter your message" className="min-h-[150px]" />
+                <Textarea 
+                  id="message" 
+                  placeholder="Enter your message" 
+                  className="min-h-[150px]" 
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  required
+                />
               </div>
-              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white">
-                Submit
+              {submitError && <p className="text-red-500">{submitError}</p>}
+              <Button 
+                type="submit" 
+                className="w-full bg-red-600 hover:bg-red-700 text-white"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </Button>
             </form>
           </CardContent>
