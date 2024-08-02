@@ -106,15 +106,15 @@ export function Carindex2({ id }: { id: number }) {
           
           <Card>
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">Vehicle Details</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">Detalles del Vehículo</h2>
               <div className="grid grid-cols-2 gap-4 text-gray-600">
-                <div><span className="font-semibold">Make:</span> {car.carMake}</div>
-                <div><span className="font-semibold">Model:</span> {car.model}</div>
-                <div><span className="font-semibold">Year:</span> {car.year}</div>
+                <div><span className="font-semibold">Marca:</span> {car.carMake}</div>
+                <div><span className="font-semibold">Modelo:</span> {car.model}</div>
+                <div><span className="font-semibold">Año:</span> {car.year}</div>
                 <div><span className="font-semibold">Color:</span> {car.color}</div>
-                <div><span className="font-semibold">Mileage:</span> {car.mileage.toLocaleString()} miles</div>
-                <div><span className="font-semibold">Engine:</span> {car.engineType}</div>
-                <div><span className="font-semibold">Transmission:</span> {car.transmissionType}</div>
+                <div><span className="font-semibold">Kilometraje:</span> {car.mileage.toLocaleString()} km</div>
+                <div><span className="font-semibold">Motor:</span> {car.engineType}</div>
+                <div><span className="font-semibold">Transmisión:</span> {car.transmissionType}</div>
                 <div><span className="font-semibold">VIN:</span> {car.vin}</div>
               </div>
             </CardContent>
@@ -122,16 +122,16 @@ export function Carindex2({ id }: { id: number }) {
 
           <Card>
             <CardContent className="p-6">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">Description</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">Descripción</h2>
               <p className="text-gray-600 leading-relaxed">
-                {car.description || "This is a detailed description of the car. It includes all the necessary information about the car's features and specifications."}
+                {car.description || "Esta es una descripción detallada del coche. Incluye toda la información necesaria sobre las características y especificaciones del coche."}
               </p>
             </CardContent>
           </Card>
           {features.length > 0 && (
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-2xl font-bold mb-4 text-gray-800">Standard Features</h2>
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Características estándar</h2>
                 <ul className="grid grid-cols-2 gap-4 text-gray-600">
                   {features.slice(0, 6).map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -164,7 +164,7 @@ export function Carindex2({ id }: { id: number }) {
                   <p className="text-sm text-gray-500">{car.dealership.city}</p>
                 </div>
               </div>
-              <Button className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={() => setIsContactFormOpen(true)}>Contact Dealer</Button>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-white" onClick={() => setIsContactFormOpen(true)}>Contactar con el dealer</Button>
               <div className="text-sm text-gray-500">
                 <p>📞 {car.dealership.phoneNumber}</p>
                 <p>📍 {car.dealership.address}, {car.dealership.city}</p>
@@ -182,6 +182,7 @@ export function Carindex2({ id }: { id: number }) {
     </div>
   );
 }
+
 function ContactFormPopup({ isOpen, onClose, carDetails }) {
 
   const [formData, setFormData] = useState({
@@ -207,79 +208,89 @@ function ContactFormPopup({ isOpen, onClose, carDetails }) {
     setSubmitError('');
 
     try {
-      const response = await axios.post('https://localhost:7126/api/v1/Email', formData);
-      console.log('Form submitted successfully:', response.data);
-      onClose(); 
+      const response = await axios.post('https://localhost:7126/api/v1/contact', formData);
+      if (response.status === 200) {
+        alert('Formulario enviado exitosamente');
+        onClose();
+      } else {
+        setSubmitError('Error al enviar el formulario. Inténtelo de nuevo.');
+      }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitError('An error occurred while submitting the form. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+      console.error('Error al enviar el formulario:', error);
+      setSubmitError('Error al enviar el formulario. Inténtelo de nuevo.');
     }
+
+    setIsSubmitting(false);
   };
-  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="relative w-full max-w-md mx-auto">
-        <Card>
-          <Button 
-            onClick={onClose} 
-            className="absolute top-2 right-2 h-8 w-8 p-0 bg-transparent hover:bg-gray-100 text-gray-500"
-          >
-            <XIcon className="h-6 w-6" />
-          </Button>
-          <CardHeader>
-            <CardTitle>Contact Us</CardTitle>
-            <CardDescription>Fill out the form below and we'll get back to you as soon as possible.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <form onSubmit={handleSubmit} className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="senderName">Name</Label>
-                <Input 
-                  id="senderName" 
-                  placeholder="Enter your name" 
-                  value={formData.senderName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="senderEmail">Email</Label>
-                <Input 
-                  id="senderEmail" 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  value={formData.senderEmail}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea 
-                  id="message" 
-                  placeholder="Enter your message" 
-                  className="min-h-[150px]" 
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              {submitError && <p className="text-red-500">{submitError}</p>}
-              <Button 
-                type="submit" 
-                className="w-full bg-red-600 hover:bg-red-700 text-white"
-                disabled={isSubmitting}
+    isOpen && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">Contactar con el dealer</h2>
+            <button className="text-gray-600 hover:text-gray-900" onClick={onClose}>
+              <XIcon className="w-6 h-6" />
+            </button>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <Label htmlFor="senderName">Nombre</Label>
+              <Input
+                id="senderName"
+                type="text"
+                value={formData.senderName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="senderEmail">Correo electrónico</Label>
+              <Input
+                id="senderEmail"
+                type="email"
+                value={formData.senderEmail}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <Label htmlFor="message">Mensaje</Label>
+              <Textarea
+                id="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+            <input
+              type="hidden"
+              id="car"
+              value={`${carDetails.vin} ${carDetails.year} ${carDetails.carMake} ${carDetails.model}`}
+            />
+            <div className="mb-4">
+              {submitError && <p className="text-red-600">{submitError}</p>}
+            </div>
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                className="bg-gray-500 hover:bg-gray-600 text-white mr-2" 
+                onClick={onClose}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                Cancelar
               </Button>
-            </form>
-          </CardContent>
-        </Card>
+              <Button
+                type="submit"
+                className="bg-red-600 hover:bg-red-700 text-white"
+                disabled={isSubmitting} 
+              >
+                {isSubmitting ? 'Enviando...' : 'Enviar'}
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    )
   );
 }
 function formatFeatureName(name: string): string {

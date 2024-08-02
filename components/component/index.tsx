@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
@@ -37,7 +36,7 @@ export default function Component() {
       try {
         const response = await axios.get<{ succeeded: boolean; message: string; errors: any; data: Car[] }>("https://localhost:7126/api/v1/Vehicle");
         if (response.data.succeeded && Array.isArray(response.data.data)) {
-          setCars(response.data.data.slice(0, 4)); // Only take the first 4 cars
+          setCars(response.data.data.slice(0, 4)); 
         } else {
           throw new Error("Data format error");
         }
@@ -72,14 +71,14 @@ export default function Component() {
                 <CarIcon className="h-12 w-12 mr-2" />
                 <h1 className="text-4xl md:text-6xl font-bold">Acme Dealership</h1>
               </div>
-              <p className="text-lg md:text-xl">Discover your dream car today.</p>
-              <Button className="w-1/2 bg-red-600 hover:bg-red-700 text-white" onClick={() => router.push('/inventory')}>Browse Inventory</Button>
+              <p className="text-lg md:text-xl">Descubre tu carro de ensueños.</p>
+              <Button className="w-1/2 bg-red-600 hover:bg-red-700 text-white" onClick={() => router.push('/inventory')}>Navegar inventario</Button>
             </div>
           </div>
         </section>
         <section className="bg-gray-100 py-12 md:py-20">
           <div className="container mx-auto px-4 md:px-6">
-            <h2 className="text-2xl md:text-3xl font-bold mb-8">Our Current Inventory</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-8">Nuestro inventario actual</h2>
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
@@ -95,7 +94,7 @@ export default function Component() {
                       />
                     </div>
                     <CardContent className="p-4">
-                      <h4 className="mb-2 text-sm font-medium text-gray-600">{car.status?.toUpperCase() || "USED"}</h4>
+                      <h4 className="mb-2 text-sm font-medium text-gray-600">{car.status?.toUpperCase() || "USADO"}</h4>
                       <h3 className="text-lg font-bold">{car.carMake} {car.model}</h3>
                       <p className="text-gray-500 text-sm">{car.year} | DOP$ {car.price.toLocaleString()}</p>
                     </CardContent>
@@ -108,16 +107,16 @@ export default function Component() {
       </main>
       <footer className="bg-gray-950 text-white py-6 px-4 md:px-6">
         <div className="container mx-auto flex items-center justify-between">
-          <p className="text-sm">&copy; 2024 Acme Dealership. All rights reserved.</p>
+          <p className="text-sm">&copy; 2024 Acme Dealership. Todos los derechos reservados.</p>
           <nav className="flex items-center space-x-4">
             <Link href="#" className="hover:underline" prefetch={false}>
-              Privacy Policy
+              Políticas de privacidad
             </Link>
             <Link href="#" className="hover:underline" prefetch={false}>
-              Terms of Service
+              Terminos de servicio
             </Link>
             <Link href="#" className="hover:underline" prefetch={false}>
-              Contact Us
+              Contactanos
             </Link>
           </nav>
         </div>

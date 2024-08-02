@@ -1,7 +1,6 @@
 import { Libre_Franklin } from 'next/font/google'
 import { ThemeProvider } from "@/components/theme-provider"
 import './globals.css'
-import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 const libre_franklin = Libre_Franklin({
@@ -30,13 +29,13 @@ export default function Layout({ children }) {
                   Home
                 </Link>
                 <Link href="/inventory" className="hover:underline" prefetch={false}>
-                  Inventory
+                  Inventario
                 </Link>
                 <Link href="#" className="hover:underline" prefetch={false}>
-                  About
+                  Acerca de
                 </Link>
                 <Link href="#" className="hover:underline" prefetch={false}>
-                  Contact
+                  Contactános
                 </Link>
               </nav>
               <div className="w-1/4"></div>
