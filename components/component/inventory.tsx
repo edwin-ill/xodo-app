@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { EmblaCarousel } from "./EmblaCarousel";
 import { useRouter } from "next/navigation";
+import Swal from 'sweetalert2';
 
 type Dealership = {
   id: number;
@@ -60,9 +61,21 @@ export function Inventory() {
         if (response.data.succeeded && Array.isArray(response.data.data)) {
           setCars(response.data.data);
         } else {
-          throw new Error("Error en el formato de los datos");
+          Swal.fire({
+            title: 'Error al cargar los datos',
+            text: response.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+          setError("Error en el formato de los datos");
         }
       } catch (error) {
+        Swal.fire({
+          title: 'Error desconocido',
+          text: 'Ocurrió un error al cargar los datos. Por favor, intente de nuevo más tarde.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
         setError(error instanceof Error ? error.message : "Ocurrió un error desconocido");
       } finally {
         setLoading(false);
@@ -98,6 +111,17 @@ export function Inventory() {
       );
     });
   }, [filters, cars]);
+
+  useEffect(() => {
+    if (cars.length === 0 && !loading && !error) {
+      Swal.fire({
+        title: 'No hay inventario disponible',
+        text: 'No se encontraron vehículos',
+        icon: 'info',
+        confirmButtonText: 'OK'
+      });
+    }
+  }, [cars, loading, error]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">      

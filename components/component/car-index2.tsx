@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { X as XIcon } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 interface Car {
   id: number;
@@ -208,12 +209,37 @@ function ContactFormPopup({ isOpen, onClose, carDetails }) {
     setSubmitError('');
 
     try {
-      const response = await axios.post('https://localhost:7126/api/v1/contact', formData);
-      if (response.status === 200) {
-        alert('Formulario enviado exitosamente');
+      const response = await axios.post('https://localhost:7126/api/v1/Email', formData);
+      if (response.status === 200 || response.status === 204) {
+        Swal.fire({
+          title: 'Formulario enviado exitosamente',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500
+        });
         onClose();
+        setFormData({
+          senderName: '',
+          senderEmail: '',
+          message: '',
+          car: `${carDetails.vin} ${carDetails.year} ${carDetails.carMake} ${carDetails.model}`,
+        });
       } else {
-        setSubmitError('Error al enviar el formulario. Inténtelo de nuevo.');
+        onClose();
+        Swal.fire({
+          title: 'Error al enviar el formulario.',
+          text: 'Inténtelo de nuevo.',
+          icon: 'error',
+          showConfirmButton: false,
+          timer: 1500
+
+        });
+        setFormData({
+          senderName: '',
+          senderEmail: '',
+          message: '',
+          car: `${carDetails.vin} ${carDetails.year} ${carDetails.carMake} ${carDetails.model}`,
+        });
       }
     } catch (error) {
       console.error('Error al enviar el formulario:', error);

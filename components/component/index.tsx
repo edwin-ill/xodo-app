@@ -69,7 +69,7 @@ export default function Component() {
             <div className="text-center text-white space-y-6">
               <div className="flex items-center justify-center">
                 <CarIcon className="h-12 w-12 mr-2" />
-                <h1 className="text-4xl md:text-6xl font-bold">Acme Dealership</h1>
+                <h1 className="text-4xl md:text-6xl font-bold">Xodo Auto Import</h1>
               </div>
               <p className="text-lg md:text-xl">Descubre tu carro de ensueños.</p>
               <Button className="w-1/2 bg-red-600 hover:bg-red-700 text-white" onClick={() => router.push('/inventory')}>Navegar inventario</Button>
@@ -107,17 +107,14 @@ export default function Component() {
       </main>
       <footer className="bg-gray-950 text-white py-6 px-4 md:px-6">
         <div className="container mx-auto flex items-center justify-between">
-          <p className="text-sm">&copy; 2024 Acme Dealership. Todos los derechos reservados.</p>
+          <p className="text-sm">&copy; 2024 Xodo Auto Import. Todos los derechos reservados.</p>
           <nav className="flex items-center space-x-4">
             <Link href="#" className="hover:underline" prefetch={false}>
               Políticas de privacidad
             </Link>
             <Link href="#" className="hover:underline" prefetch={false}>
               Terminos de servicio
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              Contactanos
-            </Link>
+            </Link>            
           </nav>
         </div>
       </footer>

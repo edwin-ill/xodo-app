@@ -22,7 +22,7 @@ export default function Layout({ children }) {
           <header className="bg-gray-950 text-white py-6 px-6 md:px-10">
             <div className="container mx-auto flex items-center">
               <Link href="/" className="flex items-center w-1/4" prefetch={false}>
-                <span className="text-xl font-bold">Acme Dealership</span>
+                <span className="text-xl font-bold">Xodo Auto Import</span>
               </Link>
               <nav className="flex-grow flex justify-center items-center space-x-6 w-1/2">
                 <Link href="/" className="hover:underline" prefetch={false}>
@@ -31,12 +31,9 @@ export default function Layout({ children }) {
                 <Link href="/inventory" className="hover:underline" prefetch={false}>
                   Inventario
                 </Link>
-                <Link href="#" className="hover:underline" prefetch={false}>
+                <Link href="/about" className="hover:underline" prefetch={false}>
                   Acerca de
-                </Link>
-                <Link href="#" className="hover:underline" prefetch={false}>
-                  Contactános
-                </Link>
+                </Link>                
               </nav>
               <div className="w-1/4"></div>
             </div>
